@@ -7,3 +7,4 @@ global using Luni.Enums;
 global using Luni.Models;
 global using Luni.Utils;
 global using Luni.Services.Interfaces;
+global using Luni.Models.Interfaces;
