@@ -2,7 +2,7 @@
 
 public class PathProvider
 {
-	private static string AppNameFolder => "muniw";
+	private static string AppNameFolder => "MUni";
 	public static string LocalDataFolder
 	{
 		get
@@ -17,8 +17,8 @@ public class PathProvider
 		}
 	}
 
-	public static string SubjectsTable => LocalDataFolder + "subj.txt";
-	public static string LessonsTable => LocalDataFolder + "lesson.txt";
-	public static string DaysTable => LocalDataFolder + "day.txt";
-	public static string WeeksTable => LocalDataFolder + "week.txt";
+	public static string SubjectsTable => Path.Combine(LocalDataFolder, "subj.txt");
+	public static string LessonsTable => Path.Combine(LocalDataFolder, "lesson.txt");
+	public static string DaysTable => Path.Combine(LocalDataFolder, "day.txt");
+	public static string WeeksTable => Path.Combine(LocalDataFolder, "week.txt");
 }

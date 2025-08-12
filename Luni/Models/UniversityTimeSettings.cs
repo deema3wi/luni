@@ -8,7 +8,7 @@ public sealed partial class UniversityTimeSettings : ITimeSettings
 	public TimeSpan BreakDuration { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 	public TimeSpan LunchBreakDuration { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 	public int LunchBreakOrder { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-	public int WeeksInSemester { get => throw new NotImplementedException; set => throw new NotImplementedException(); }
+	public int WeeksInSemester { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 	public DateTime EndDate()
 	{

@@ -15,8 +15,8 @@ public partial class Db
 
 public partial class Db
 {
-	public void LoadSubjects()
-	{
-
-	}
+	public async Task LoadSubjects() => Subjects = await Subject.ReadTableAsync();
+	public async Task LoadLessons() => Lessons = await Lesson.ReadTableAsync();
+	public async Task LoadDays() => Days = await Day.ReadTableAsync();
+	public async Task LoadWeeks() => Weeks = await Week.ReadTableAsync();
 }

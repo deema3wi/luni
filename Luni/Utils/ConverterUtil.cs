@@ -2,6 +2,7 @@
 
 public class ConverterUtil
 {
-	public static string Col => ":";
-	public static string Row => "|";
+	public static char ColumnSeparator => '+';
+	public static char RowSeparator => '|';
+	public static char ArrayItemSeparator => ',';
 }

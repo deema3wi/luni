@@ -2,9 +2,8 @@
 
 namespace Luni.Models;
 
-public partial class Week
+public partial class Week : Model
 {
-	public int Id { get; set; }
 	public int Order { get; set; }
 	public int[] DayIds { get; set; } = [];
 }
@@ -24,14 +23,14 @@ public partial class Week
 {
 	public static string ToRow(Week w)
 	{
-		string sep = ConverterUtil.Col;
+		char sep = Parser.ColumnSeparator;
 		string comsep = string.Join(',', w.DayIds);
 		return $"{w.Id}{sep}{w.Order}{sep}{comsep}";
 	}
 
 	public static Week Parse(string row)
 	{
-		string[] sp = row.Split(ConverterUtil.Col);
+		string[] sp = row.Split(Parser.ColumnSeparator);
 		int[] ids = [.. sp[2].Split(',').Select(int.Parse)];
 		int id = int.Parse(sp[0]);
 		int order = int.Parse(sp[1]);

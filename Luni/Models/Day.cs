@@ -1,12 +1,8 @@
-﻿using Luni.Services;
+﻿namespace Luni.Models;
 
-namespace Luni.Models;
-
-public partial class Day
+public partial class Day : Model
 {
-	public int Id { get; set; }
 	public int DayOfWeek { get; set; }
-
 	public int[] LessonIds { get; set; } = [];
 }
 
@@ -25,15 +21,15 @@ public partial class Day
 {
 	public static string ToRow(Day d)
 	{
-		string sep = ConverterUtil.Col;
-		string comsep = string.Join(',', d.LessonIds);
+		char sep = Parser.ColumnSeparator;
+		string comsep = string.Join(Parser.ArrayItemSeparator, d.LessonIds);
 		return $"{d.Id}{sep}{d.DayOfWeek}{sep}{comsep}";
 	}
 
 	public static Day Parse(string row)
 	{
-		string[] sp = row.Split(ConverterUtil.Col);
-		int[] ids = [.. sp[2].Split(',').Select(int.Parse)];
+		string[] sp = row.Split(Parser.ColumnSeparator);
+		int[] ids = [.. sp[2].Split(Parser.ArrayItemSeparator).Select(int.Parse)];
 		int id = int.Parse(sp[0]);
 		int dof = int.Parse(sp[1]);
 		return new(id, dof, ids);

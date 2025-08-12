@@ -1,21 +1,16 @@
-﻿using Luni.Services;
+﻿namespace Luni.Models;
 
-namespace Luni.Models;
-
-public partial class Lesson
+public partial class Lesson : Model
 {
-	public int Id { get; set; }
 	public int Order { get; set; }
 	public LessonType Type { get; set; }
 	public string Room { get; set; } = string.Empty;
-
 	public int SubjId { get; set; }
 }
 
 public partial class Lesson
 {
 	public Lesson() { }
-
 	public Lesson(int id, int subjId, int order, LessonType type, string room)
 	{
 		Id = id;
@@ -30,7 +25,7 @@ public partial class Lesson
 {
 	public static string ToRow(Lesson ls)
 	{
-		string sep = ConverterUtil.Col;
+		char sep = Parser.ColumnSeparator;
 		return $"{ls.Id}{sep}" +
 			$"{ls.SubjId}{sep}" +
 			$"{ls.Order}{sep}" +
@@ -40,7 +35,7 @@ public partial class Lesson
 
 	public static Lesson Parse(string row)
 	{
-		string[] sp = row.Split(ConverterUtil.Col);
+		string[] sp = row.Split(Parser.ColumnSeparator);
 		int id = int.Parse(sp[0]);
 		int sid = int.Parse(sp[1]);
 		int order = int.Parse(sp[2]);
