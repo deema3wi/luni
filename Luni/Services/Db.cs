@@ -18,21 +18,34 @@ public partial class Db
 
 	public async Task LoadAll()
 	{
-		Task subj = Subject.ReadTableAsync();
-		Task less = Lesson.ReadTableAsync();
-		Task day = Day.ReadTableAsync();
-		Task week = Week.ReadTableAsync();
+		Task<List<Subject>> subj = Subject.ReadTableAsync();
+		Task<List<Lesson>> less = Lesson.ReadTableAsync();
+		Task<List<Day>> day = Day.ReadTableAsync();
+		Task<List<Week>> week = Week.ReadTableAsync();
 		subj.Start();
 		less.Start();
 		day.Start();
 		week.Start();
 
 		await Task.WhenAll(subj, less, day, week);
+		(Subjects, Lessons, Days, Weeks) =
+			(subj.Result, less.Result, day.Result, week.Result);
 	}
 }
 
 public partial class Db
 {
-	public int NewId(List<Model> models)
+	public static int NewId(List<Model> models)
 		=> models.Count > 0 ? models.Max(x => x.Id) : 1;
+
+	public static (bool, List<Model>) AddIfOtherContainsId(List<Model> dest, List<Model> other, Model model)
+	{
+		if (other.Select(x => x.Id).Contains(model.Id))
+		{
+			dest.Add(model);
+			return (true, dest);
+		}
+
+		return (false, dest);
+	}
 }

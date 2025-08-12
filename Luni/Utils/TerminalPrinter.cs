@@ -1,4 +1,4 @@
-﻿namespace Luni.Services;
+﻿namespace Luni.Utils;
 
 public class TerminalPrinter : IErrorMessagePrinter
 {
