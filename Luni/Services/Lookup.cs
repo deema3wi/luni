@@ -2,7 +2,7 @@
 
 public class Lookup
 {
-	public static (bool, Model[]) AddIfOtherContainsId(Model[] dest, Model[] other, Model model)
+	public static (bool, List<Model>) AddIfOtherContainsId(List<Model> dest, List<Model> other, Model model)
 	{
 		if (other.Select(x => x.Id).Contains(model.Id))
 		{

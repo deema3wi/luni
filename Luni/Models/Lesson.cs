@@ -44,10 +44,10 @@ public partial class Lesson
 		return new(id, sid, order, type, sp[4]);
 	}
 
-	public static string ToTable(Lesson[] ls)
+	public static string ToTable(List<Lesson> ls)
 		=> Parser.ToTable(ls, ToRow);
 
-	public static Lesson[] ParseMany(string content)
+	public static List<Lesson> ParseMany(string content)
 		=> Parser.ParseMany(content, Parse);
 }
 
@@ -55,12 +55,12 @@ public partial class Lesson
 {
 	private static string TablePath => PathProvider.LessonsTable;
 
-	public static async Task<Lesson[]> ReadTableAsync()
+	public static async Task<List<Lesson>> ReadTableAsync()
 	{
 		string table = await Storage.ReadFileAsync(TablePath);
 		return ParseMany(table);
 	}
 
-	public static async Task WriteTableAsync(Lesson[] sbs)
+	public static async Task WriteTableAsync(List<Lesson> sbs)
 		=> await Storage.WriteFileAsync(TablePath, ToTable(sbs));
 }
