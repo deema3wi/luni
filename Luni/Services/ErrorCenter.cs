@@ -1,6 +1,6 @@
 ﻿namespace Luni.Services;
 
-public static class ErrorCenter
+public class ErrorCenter
 {
 	public static IErrorMessagePrinter Printer { get; set; } = new TerminalPrinter();
 	public static List<Exception> Errors { get; set; } = [];
@@ -11,8 +11,15 @@ public static class ErrorCenter
 		Printer.Print(err.Message);
 	}
 
-	public static void JournalErrors()
+	public static async Task JournalErrorsAsync()
 	{
-		string dateTime = DateTime.Now.ToString();
+		string journal = DateTime.Now.ToString();
+		for (int i = 0; i < Errors.Count; i++)
+		{
+			journal = Errors[i].ToString() + Environment.NewLine + journal;
+		}
+
+		string path = PathProvider.GetPath<ErrorCenter>();
+		await Storage.Write<ErrorCenter>(journal);
 	}
 }
