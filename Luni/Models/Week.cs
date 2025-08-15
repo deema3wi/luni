@@ -19,39 +19,18 @@ public partial class Week
 
 public partial class Week
 {
-	public static string ToRow(Week w)
+	public override string ToRow()
 	{
 		char sep = Parser.ColumnSeparator;
-		string comsep = string.Join(',', w.DayIds);
-		return $"{w.Id}{sep}{w.Order}{sep}{comsep}";
+		string comsep = string.Join(',', DayIds);
+		return $"{Id}{sep}{Order}{sep}{comsep}";
 	}
 
-	public static Week Parse(string row)
+	public override void Become(string row)
 	{
 		string[] sp = row.Split(Parser.ColumnSeparator);
-		List<int> ids = [.. sp[2].Split(',').Select(int.Parse)];
-		int id = int.Parse(sp[0]);
-		int order = int.Parse(sp[1]);
-		return new(id, order, ids);
+		DayIds = [.. sp[2].Split(',').Select(int.Parse)];
+		Id = int.Parse(sp[0]);
+		Order = int.Parse(sp[1]);
 	}
-
-	public static string ToTable(List<Week> weeks)
-		=> Parser.ToTable(weeks, ToRow);
-
-	public static List<Week> ParseMany(string table)
-		=> Parser.ParseMany(table, Parse);
-}
-
-public partial class Week
-{
-	public static string TablePath => PathProvider.WeeksTable;
-
-	public static async Task<List<Week>> ReadTableAsync()
-	{
-		string table = await Storage.ReadFileAsync(TablePath);
-		return ParseMany(table);
-	}
-
-	public static async Task WriteTableAsync(List<Week> sbs)
-		=> await Storage.WriteFileAsync(TablePath, ToTable(sbs));
 }

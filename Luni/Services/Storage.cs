@@ -30,4 +30,16 @@ public class Storage
 			ErrorCenter.Add(ex);
 		}
 	}
+
+	public static async Task<string> Read<T>() where T : Model
+	{
+		string path = PathProvider.GetPath<T>();
+		return await ReadFileAsync(path);
+	}
+
+	public static async Task Write<T>(string context)
+	{
+		string path = PathProvider.GetPath<T>();
+		await WriteFileAsync(path, context);
+	}
 }

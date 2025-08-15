@@ -19,39 +19,18 @@ public partial class Day
 
 public partial class Day
 {
-	public static string ToRow(Day d)
+	public override string ToRow()
 	{
 		char sep = Parser.ColumnSeparator;
-		string comsep = string.Join(Parser.ArrayItemSeparator, d.LessonIds);
-		return $"{d.Id}{sep}{d.DayOfWeek}{sep}{comsep}";
+		string comsep = string.Join(Parser.ArrayItemSeparator, LessonIds);
+		return $"{Id}{sep}{DayOfWeek}{sep}{comsep}";
 	}
 
-	public static Day Parse(string row)
+	public override void Become(string row)
 	{
 		string[] sp = row.Split(Parser.ColumnSeparator);
-		List<int> ids = [.. sp[2].Split(Parser.ArrayItemSeparator).Select(int.Parse)];
-		int id = int.Parse(sp[0]);
-		int dof = int.Parse(sp[1]);
-		return new(id, dof, ids);
+		LessonIds = [.. sp[2].Split(Parser.ArrayItemSeparator).Select(int.Parse)];
+		Id = int.Parse(sp[0]);
+		DayOfWeek = int.Parse(sp[1]);
 	}
-
-	public static string ToTable(List<Day> days)
-		=> Parser.ToTable(days, ToRow);
-
-	public static List<Day> ParseMany(string table)
-		=> Parser.ParseMany(table, Parse);
-}
-
-public partial class Day
-{
-	public static string TablePath => PathProvider.DaysTable;
-
-	public static async Task<List<Day>> ReadTableAsync()
-	{
-		string table = await Storage.ReadFileAsync(TablePath);
-		return ParseMany(table);
-	}
-
-	public static async Task WriteTableAsync(List<Day> sbs)
-		=> await Storage.WriteFileAsync(TablePath, ToTable(sbs));
 }

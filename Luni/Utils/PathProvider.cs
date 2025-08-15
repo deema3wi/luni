@@ -21,4 +21,11 @@ public class PathProvider
 	public static string LessonsTable => Path.Combine(LocalDataFolder, "lesson.txt");
 	public static string DaysTable => Path.Combine(LocalDataFolder, "day.txt");
 	public static string WeeksTable => Path.Combine(LocalDataFolder, "week.txt");
+
+	public static string GetPath<T>()
+	{
+		string file = typeof(T).Name.ToLower() + ".txt";
+		string path = Path.Combine(LocalDataFolder, file);
+		return path;
+	}
 }

@@ -11,25 +11,25 @@ public partial class Db
 
 public partial class Db
 {
-	public async Task LoadSubjects() => Subjects = await Subject.ReadTableAsync();
-	public async Task LoadLessons() => Lessons = await Lesson.ReadTableAsync();
-	public async Task LoadDays() => Days = await Day.ReadTableAsync();
-	public async Task LoadWeeks() => Weeks = await Week.ReadTableAsync();
-
+	public async Task LoadSubjects() => Subjects = Parser.FromTable<Subject>(await Storage.Read<Subject>());
+	public async Task LoadLessons() => Lessons = Parser.FromTable<Lesson>(await Storage.Read<Lesson>());
+	public async Task LoadDays() => Days = Parser.FromTable<Day>(await Storage.Read<Day>());
+	public async Task LoadWeeks() => Weeks = Parser.FromTable<Week>(await Storage.Read<Week>());
+	
 	public async Task LoadAll()
 	{
-		Task<List<Subject>> subj = Subject.ReadTableAsync();
-		Task<List<Lesson>> less = Lesson.ReadTableAsync();
-		Task<List<Day>> day = Day.ReadTableAsync();
-		Task<List<Week>> week = Week.ReadTableAsync();
-		subj.Start();
-		less.Start();
-		day.Start();
-		week.Start();
+		Task<string> subj = Storage.Read<Subject>();
+		Task<string> less = Storage.Read<Lesson>();
+		Task<string> day = Storage.Read<Day>();
+		Task<string> week = Storage.Read<Week>();
 
+		subj.Start(); less.Start(); day.Start(); week.Start();
 		await Task.WhenAll(subj, less, day, week);
-		(Subjects, Lessons, Days, Weeks) =
-			(subj.Result, less.Result, day.Result, week.Result);
+
+		Subjects = Parser.FromTable<Subject>(subj.Result);
+		Lessons = Parser.FromTable<Lesson>(subj.Result);
+		Days = Parser.FromTable<Day>(subj.Result);
+		Weeks = Parser.FromTable<Week>(subj.Result);
 	}
 }
 
