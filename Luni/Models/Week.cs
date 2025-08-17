@@ -29,8 +29,9 @@ public partial class Week
 	public override void Become(string row)
 	{
 		string[] sp = row.Split(Parser.ColumnSeparator);
-		DayIds = [.. sp[2].Split(',').Select(int.Parse)];
-		Id = int.Parse(sp[0]);
-		Order = int.Parse(sp[1]);
+		if (sp.Length > 2 )
+			Id = int.Parse(sp[0]);
+		Order = int.Parse(sp[^2]);
+		DayIds = [.. sp[^1].Split(',').Select(int.Parse)];
 	}
 }

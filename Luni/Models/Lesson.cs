@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace Luni.Models;
+﻿namespace Luni.Models;
 
 public partial class Lesson : Model
 {
@@ -38,9 +36,11 @@ public partial class Lesson
 	public override void Become(string row)
 	{
 		string[] sp = row.Split(Parser.ColumnSeparator);
-		Id = int.Parse(sp[0]);
-		SubjId = int.Parse(sp[1]);
-		Order = int.Parse(sp[2]);
-		Type = (LessonType)int.Parse(sp[3]);
+		if (sp.Length > 4 )
+			Id = int.Parse(sp[0]);
+		SubjId = int.Parse(sp[^4]);
+		Order = int.Parse(sp[^3]);
+		Type = (LessonType)int.Parse(sp[^2]);
+		Room = sp[^1];
 	}
 }

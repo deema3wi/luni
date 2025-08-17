@@ -21,7 +21,8 @@ public partial class Subject : Model
 	public override void Become(string row)
 	{
 		string[] sp = row.Split(Parser.ColumnSeparator);
-		Id = int.Parse(sp[0]);
-		Name = sp[1];
+		if (sp.Length > 1 )
+			Id = int.Parse(sp[0]);
+		Name = sp[^1];
 	}
 }

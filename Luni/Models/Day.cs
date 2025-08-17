@@ -29,8 +29,9 @@ public partial class Day
 	public override void Become(string row)
 	{
 		string[] sp = row.Split(Parser.ColumnSeparator);
-		LessonIds = [.. sp[2].Split(Parser.ArrayItemSeparator).Select(int.Parse)];
-		Id = int.Parse(sp[0]);
-		DayOfWeek = int.Parse(sp[1]);
+		if (sp.Length > 2)
+			Id = int.Parse(sp[0]);
+		DayOfWeek = int.Parse(sp[^2]);
+		LessonIds = [.. sp[^1].Split(Parser.ArrayItemSeparator).Select(int.Parse)];
 	}
 }
