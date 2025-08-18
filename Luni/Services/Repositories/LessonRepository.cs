@@ -1,4 +1,4 @@
-﻿namespace Luni.Services;
+﻿namespace Luni.Services.Repositories;
 
 public class LessonRepository(Db db) : Repository<Lesson>(db, db.Lessons)
 {

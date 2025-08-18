@@ -9,3 +9,4 @@ global using Luni.Utils;
 global using Luni.Services.Interfaces;
 global using Luni.Models.Interfaces;
 global using Luni.Services;
+global using Luni.Services.Repositories;

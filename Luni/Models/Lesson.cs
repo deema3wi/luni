@@ -20,6 +20,7 @@ public partial class Lesson
 		Type = type;
 		Room = room;
 	}
+	public Lesson(string row) => Become(row);
 }
 
 public partial class Lesson
@@ -37,8 +38,11 @@ public partial class Lesson
 	public override void Become(string row)
 	{
 		string[] sp = row.Split(Parser.ColumnSeparator);
-		if (sp.Length > 4 )
+		if (sp.Length == 5)
 			Id = int.Parse(sp[0]);
+		else if (sp.Length < 4 || sp.Length > 5)
+			ErrorCenter.LengthError("Lesson.Become", sp.Length, "4-5");
+
 		SubjId = int.Parse(sp[^4]);
 		Order = int.Parse(sp[^3]);
 		Type = (LessonType)int.Parse(sp[^2]);
