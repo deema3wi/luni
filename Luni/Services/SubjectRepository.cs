@@ -1,4 +1,5 @@
-﻿namespace Luni.Services;
+﻿
+namespace Luni.Services;
 
 public class SubjectRepository(Db db) : Repository<Subject>(db, db.Subjects)
 {
@@ -7,5 +8,11 @@ public class SubjectRepository(Db db) : Repository<Subject>(db, db.Subjects)
 		bool duplicateName = _db.Subjects
 			.Any(x => x.Name.Equals(model.Name, StringComparison.CurrentCultureIgnoreCase));
 		return !duplicateName;
+	}
+
+	public override async Task LoadAsync()
+	{
+		await _db.LoadSubjectsAsync();
+		_list = _db.Subjects;
 	}
 }

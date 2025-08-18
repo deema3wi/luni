@@ -13,25 +13,20 @@ public partial class Db
 
 public partial class Db
 {
-	public async Task LoadSubjects() => Subjects = Parser.FromTable<Subject>(await Storage.ReadAsync<Subject>());
-	public async Task LoadLessons() => Lessons = Parser.FromTable<Lesson>(await Storage.ReadAsync<Lesson>());
-	public async Task LoadDays() => Days = Parser.FromTable<Day>(await Storage.ReadAsync<Day>());
-	public async Task LoadWeeks() => Weeks = Parser.FromTable<Week>(await Storage.ReadAsync<Week>());
+	public async Task LoadSubjectsAsync() => Subjects = Parser.FromTable<Subject>(await Storage.ReadAsync<Subject>());
+	public async Task LoadLessonsAsync() => Lessons = Parser.FromTable<Lesson>(await Storage.ReadAsync<Lesson>());
+	public async Task LoadDaysAsync() => Days = Parser.FromTable<Day>(await Storage.ReadAsync<Day>());
+	public async Task LoadWeeksAsync() => Weeks = Parser.FromTable<Week>(await Storage.ReadAsync<Week>());
 	
 	public async Task LoadAll()
 	{
-		Task<string> subj = Storage.ReadAsync<Subject>();
-		Task<string> less = Storage.ReadAsync<Lesson>();
-		Task<string> day = Storage.ReadAsync<Day>();
-		Task<string> week = Storage.ReadAsync<Week>();
+		Task subj = LoadSubjectsAsync();
+		Task less = LoadLessonsAsync();
+		Task day = LoadDaysAsync();
+		Task week = LoadWeeksAsync();
 
 		subj.Start(); less.Start(); day.Start(); week.Start();
 		await Task.WhenAll(subj, less, day, week);
-
-		Subjects = Parser.FromTable<Subject>(subj.Result);
-		Lessons = Parser.FromTable<Lesson>(subj.Result);
-		Days = Parser.FromTable<Day>(subj.Result);
-		Weeks = Parser.FromTable<Week>(subj.Result);
 	}
 }
 
@@ -59,5 +54,15 @@ public partial class Db
 			dest.Add(model);
 
 		return contains;
+	}
+
+	public static async Task<bool> LoadAndAdd<TModel, TRepo>(string row, TRepo repo)
+		where TModel : Model, new()
+		where TRepo : Repository<TModel>
+	{
+		TModel model = new();
+		model.Become(row);
+		await repo.LoadAsync();
+		return repo.Add(model);
 	}
 }

@@ -2,25 +2,22 @@
 
 public class PathProvider
 {
+	private static string _saveFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppNameFolder);
+
 	public static string AppNameFolder => "MUni";
-	public static string LocalDataFolder
+	public static string SaveFolder
 	{
-		get
-		{
-			string appLoc = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-			string path = Path.Combine(appLoc, AppNameFolder);
-			if (!Directory.Exists(path))
-			{
-				Directory.CreateDirectory(path);
-			}
-			return path;
-		}
+		get => _saveFolder;
+		set => _saveFolder = value;
 	}
 
 	public static string GetPath<T>()
 	{
 		string file = typeof(T).Name.ToLower() + ".txt";
-		string path = Path.Combine(LocalDataFolder, file);
+		string path = Path.Combine(SaveFolder, file);
 		return path;
 	}
+
+	public static string EnvironmentFolder()
+		=> Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 }
