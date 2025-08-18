@@ -20,6 +20,6 @@ public class ErrorCenter
 		}
 
 		string path = PathProvider.GetPath<ErrorCenter>();
-		await Storage.Write<ErrorCenter>(journal);
+		await Storage.WriteAsync<ErrorCenter>(journal);
 	}
 }

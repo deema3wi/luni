@@ -7,7 +7,8 @@ public interface ITimeSettings
 	public TimeSpan BreakDuration { get; set; }
 	public TimeSpan LunchBreakDuration { get; set; }
 	public int LunchBreakOrder { get; set; }
+	public DateTime SemesterStartDate { get; set; }
+	public TimeSpan StartTodayDifference { get; }
 
-	public DateTime StartDate();
 	public DateTime EndDate();
 }

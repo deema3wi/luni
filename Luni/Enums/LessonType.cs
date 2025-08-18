@@ -10,5 +10,6 @@ public enum LessonType
 	Credit,
 	Consultation,
 	Exam,
-	ExamRetake
+	ExamRetake,
+	Lesson
 }

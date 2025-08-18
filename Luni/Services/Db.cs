@@ -1,4 +1,6 @@
-﻿namespace Luni.Services;
+﻿using System.Linq;
+
+namespace Luni.Services;
 
 public partial class Db
 {
@@ -11,17 +13,17 @@ public partial class Db
 
 public partial class Db
 {
-	public async Task LoadSubjects() => Subjects = Parser.FromTable<Subject>(await Storage.Read<Subject>());
-	public async Task LoadLessons() => Lessons = Parser.FromTable<Lesson>(await Storage.Read<Lesson>());
-	public async Task LoadDays() => Days = Parser.FromTable<Day>(await Storage.Read<Day>());
-	public async Task LoadWeeks() => Weeks = Parser.FromTable<Week>(await Storage.Read<Week>());
+	public async Task LoadSubjects() => Subjects = Parser.FromTable<Subject>(await Storage.ReadAsync<Subject>());
+	public async Task LoadLessons() => Lessons = Parser.FromTable<Lesson>(await Storage.ReadAsync<Lesson>());
+	public async Task LoadDays() => Days = Parser.FromTable<Day>(await Storage.ReadAsync<Day>());
+	public async Task LoadWeeks() => Weeks = Parser.FromTable<Week>(await Storage.ReadAsync<Week>());
 	
 	public async Task LoadAll()
 	{
-		Task<string> subj = Storage.Read<Subject>();
-		Task<string> less = Storage.Read<Lesson>();
-		Task<string> day = Storage.Read<Day>();
-		Task<string> week = Storage.Read<Week>();
+		Task<string> subj = Storage.ReadAsync<Subject>();
+		Task<string> less = Storage.ReadAsync<Lesson>();
+		Task<string> day = Storage.ReadAsync<Day>();
+		Task<string> week = Storage.ReadAsync<Week>();
 
 		subj.Start(); less.Start(); day.Start(); week.Start();
 		await Task.WhenAll(subj, less, day, week);
@@ -35,17 +37,27 @@ public partial class Db
 
 public partial class Db
 {
-	public static int NewId(List<Model> models)
-		=> models.Count > 0 ? models.Max(x => x.Id) : 1;
+	public static int NewId<T>(List<T> models) where T : Model
+		=> models.Count > 0 ? models.Max(x => x.Id) + 1 : 1;
 
-	public static (bool, List<Model>) AddIfOtherContainsId(List<Model> dest, List<Model> other, Model model)
+	public static bool AddIfOtherContainsId<T>(List<T> dest, List<T> other, T model) where T : Model
 	{
-		if (other.Select(x => x.Id).Contains(model.Id))
-		{
+		bool contains = other.Any(x => x.Id == model.Id);
+		if (contains)
 			dest.Add(model);
-			return (true, dest);
-		}
 
-		return (false, dest);
+		return contains;
+	}
+
+	public static bool AddIfOtherContainsId<TDest, TOther>
+		(List<TDest> dest, List<TOther> other, TDest model, int? searchedId = null)
+		where TDest : Model
+		where TOther : Model
+	{
+		bool contains = other.Any(x => x.Id == searchedId);
+		if (contains)
+			dest.Add(model);
+
+		return contains;
 	}
 }

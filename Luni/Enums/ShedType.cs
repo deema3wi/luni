@@ -4,5 +4,6 @@ public enum ShedType
 {
 	None,
 	School,
-	University
+	University,
+	Custom
 }
