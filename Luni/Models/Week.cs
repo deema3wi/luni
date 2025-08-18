@@ -9,6 +9,7 @@ public partial class Week : Model
 public partial class Week
 {
 	public Week() { }
+	public Week(int id) { Id = id; }
 	public Week(int id, int order, List<int> dayIds)
 	{
 		Id = id;

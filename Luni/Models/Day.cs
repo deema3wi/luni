@@ -9,6 +9,7 @@ public partial class Day : Model
 public partial class Day
 {
 	public Day() { }
+	public Day(int id) { Id = id; }
 	public Day(int id, int dof, List<int> lessonIds)
 	{
 		Id = id;

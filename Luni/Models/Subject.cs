@@ -5,7 +5,7 @@ public partial class Subject : Model
 	public string Name { get; set; } = string.Empty;
 
 	public Subject() { }
-
+	public Subject(int id) { Id = id; }
 	public Subject(int id, string name)
 	{
 		Id = id;

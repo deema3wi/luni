@@ -11,6 +11,7 @@ public partial class Lesson : Model
 public partial class Lesson
 {
 	public Lesson() { }
+	public Lesson(int id) { Id = id; }
 	public Lesson(int id, int subjId, int order, LessonType type, string room)
 	{
 		Id = id;
